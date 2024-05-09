@@ -152,6 +152,16 @@ view: campaign {
     sql: ${TABLE}.Year_Birth ;;
   }
 
+  dimension: age {
+    type: number
+    sql: 2018-${year_birth} ;;
+  }
+
+  dimension: no_of_child {
+    type: number
+    sql: ${teenhome}+${kidhome} ;;
+  }
+
   dimension: z_cost_contact {
     type: number
     sql: ${TABLE}.Z_CostContact ;;
