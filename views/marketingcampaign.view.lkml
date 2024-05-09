@@ -1,8 +1,8 @@
-# The name of this view in Looker is "Zazmic Campaign"
-view: zazmic_campaign {
+# The name of this view in Looker is "Marketingcampaign"
+view: marketingcampaign {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
-  sql_table_name: `boostr-396507.zazmic_marketing.zazmic_campaign` ;;
+  sql_table_name: `boostr-396507.zazmic_marketing.Marketingcampaign` ;;
 
   # No primary key is defined for this view. In order to join this view in an Explore,
   # define primary_key: yes on a dimension that has no repeated values.
@@ -57,9 +57,9 @@ view: zazmic_campaign {
     sql: ${TABLE}.gender ;;
   }
 
-  dimension: impressions {
+  dimension: impression {
     type: number
-    sql: ${TABLE}.Impressions ;;
+    sql: ${TABLE}.Impression ;;
   }
 
   dimension: interest {
