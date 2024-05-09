@@ -1,5 +1,6 @@
 # The name of this view in Looker is "Marketingcampaign"
 view: marketingcampaign {
+  label: "Campaign"
 
 # The name of this view in Looker is "Zazmic Campaign"
 
@@ -92,6 +93,7 @@ view: marketingcampaign {
     type: number
     sql: ${TABLE}.xyz_campaign_id ;;
   }
+
   measure: count {
     type: count
     drill_fields: [drill_fields*]
