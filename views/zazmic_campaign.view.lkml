@@ -1,5 +1,6 @@
 # The name of this view in Looker is "Zazmic Campaign"
 view: zazmic_campaign {
+  label: "Campaign"
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
   sql_table_name: `boostr-396507.zazmic_marketing.zazmic_campaign` ;;
