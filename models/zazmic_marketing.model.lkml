@@ -27,3 +27,4 @@ persist_with: zazmic_marketing_default_datagroup
 
 explore: campaign {}
 
+explore: marketingcamp {}
