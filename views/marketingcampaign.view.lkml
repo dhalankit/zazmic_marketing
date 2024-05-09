@@ -1,7 +1,8 @@
 # The name of this view in Looker is "Marketingcampaign"
 view: marketingcampaign {
-  # The sql_table_name parameter indicates the underlying database table
-  # to be used for all fields in this view.
+
+# The name of this view in Looker is "Zazmic Campaign"
+
   sql_table_name: `boostr-396507.zazmic_marketing.Marketingcampaign` ;;
 
   # No primary key is defined for this view. In order to join this view in an Explore,
@@ -93,5 +94,10 @@ view: marketingcampaign {
   }
   measure: count {
     type: count
+    drill_fields: [drill_fields*]
+  }
+
+  set: drill_fields {
+    fields: [age,approved_conversion,sales]
   }
 }
