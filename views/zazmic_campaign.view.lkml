@@ -1,16 +1,20 @@
-# The name of this view in Looker is "Marketingcamp"
-view: marketingcamp {
-  label: "Marketing Campaign"
+# The name of this view in Looker is "Zazmic Campaign"
+view: zazmic_campaign {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
-  sql_table_name: `boostr-396507.zazmic_marketing.marketingcamp` ;;
+  sql_table_name: `boostr-396507.zazmic_marketing.zazmic_campaign` ;;
 
   # No primary key is defined for this view. In order to join this view in an Explore,
   # define primary_key: yes on a dimension that has no repeated values.
 
     # Here's what a typical dimension looks like in LookML.
     # A dimension is a groupable field that can be used to filter query results.
-    # This dimension will be called "Ad ID" in Explore.
+    # This dimension will be called "Ad Campaigns" in Explore.
+
+  dimension: ad_campaigns {
+    type: number
+    sql: ${TABLE}.Ad_Campaigns ;;
+  }
 
   dimension: ad_id {
     type: number
@@ -63,9 +67,14 @@ view: marketingcamp {
     sql: ${TABLE}.interest ;;
   }
 
-  dimension: sales {
+  dimension: product_category {
     type: string
-    sql: CAST(${TABLE}.Sales AS INTEGER) ;;
+    sql: ${TABLE}.Product_Category ;;
+  }
+
+  dimension: sales {
+    type: number
+    sql: ${TABLE}.Sales ;;
   }
 
   dimension: spent {
