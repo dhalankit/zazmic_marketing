@@ -93,5 +93,10 @@ view: zazmic_campaign {
   }
   measure: count {
     type: count
+    drill_fields: [drill_fields*]
+  }
+
+  set: drill_fields {
+    fields: [age,approved_conversion,sales]
   }
 }
