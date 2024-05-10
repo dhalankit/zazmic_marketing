@@ -74,6 +74,7 @@ view: marketingcampaign {
   }
 
   dimension: sales {
+    label: "Revenue Generated"
     type: number
     sql: ${TABLE}.Sales ;;
   }
@@ -96,7 +97,18 @@ view: marketingcampaign {
     type: count
     drill_fields: [drill_fields*]
   }
+measure: Saless {
+  label: "Sales"
+  type: sum
+  sql: ${sales} ;;
+  value_format:  "[>=1001]$#,##0.00,\" K\";$#,##0"
+  drill_fields: [product_category,Saless]
 
+}
+measure: Total_spent{
+  type: sum
+  sql: ${spent} ;;
+}
   set: drill_fields {
     fields: [age,approved_conversion,sales]
   }
