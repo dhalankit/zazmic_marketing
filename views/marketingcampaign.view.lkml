@@ -1,17 +1,7 @@
-# The name of this view in Looker is "Marketingcampaign"
 view: marketingcampaign {
   label: "Campaign"
 
-# The name of this view in Looker is "Zazmic Campaign"
-
   sql_table_name: `boostr-396507.zazmic_marketing.Marketingcampaign` ;;
-
-  # No primary key is defined for this view. In order to join this view in an Explore,
-  # define primary_key: yes on a dimension that has no repeated values.
-
-    # Here's what a typical dimension looks like in LookML.
-    # A dimension is a groupable field that can be used to filter query results.
-    # This dimension will be called "Ad Campaigns" in Explore.
 
   dimension: ad_campaigns {
     type: number
@@ -32,17 +22,6 @@ view: marketingcampaign {
     type: number
     sql: ${TABLE}.Approved_Conversion ;;
   }
-
-  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
-  # measures for this dimension, but you can also add measures of many different aggregates.
-  # Click on the type parameter to see all the options in the Quick Help panel on the right.
-
-  measure: total_approved_conversion {
-    type: sum
-    sql: ${approved_conversion} ;;  }
-  measure: average_approved_conversion {
-    type: average
-    sql: ${approved_conversion} ;;  }
 
   dimension: clicks {
     type: number
@@ -85,7 +64,7 @@ view: marketingcampaign {
     sql: ${TABLE}.Spent ;;
   }
 
-  dimension: total_conversion {
+  dimension: inquiry {
     type: number
     sql: ${TABLE}.Total_Conversion ;;
   }
@@ -95,21 +74,50 @@ view: marketingcampaign {
     sql: ${TABLE}.xyz_campaign_id ;;
   }
 
-  measure: count {
+ #---------------------------------------------MEASURES------------------------------------------------------------
+measure: conversion_rate{
+  type: number
+  sql: ${approved_conversion}/${inquiry} ;;
+}
+
+measure: count {
     type: count
-    drill_fields: [drill_fields*]
+    drill_fields: [Total_spent,Saless]
   }
 measure: Saless {
   label: "Sales"
   type: sum
   sql: ${sales} ;;
   value_format:  "[>=1001]$#,##0.00,\" K\";$#,##0"
-  drill_fields: [product_category,Saless]
-
+ # drill_fields: [interest,Saless]
 }
+  measure: Sales {
+    label: "Revenue"
+    type: sum
+    sql: ${sales} ;;
+    value_format:  "[>=1001]$#,##0.00,\" K\";$#,##0"
+    #drill_fields: [gender,Total_spent,Saless]
+  }
+measure: total_impressions {
+  type: sum
+  sql: ${impression} ;;
+}
+measure: total_clicks {
+  type: sum
+  sql: ${clicks} ;;
+}
+ measure: total_approved_conversion {
+  type: sum
+  sql: ${approved_conversion} ;;  }
+
+measure: average_approved_conversion {
+  type: average
+  sql: ${approved_conversion} ;;  }
+
 measure: Total_spent{
   type: sum
   sql: ${spent} ;;
+  value_format:  "[>=1001]$#,##0.00,\" K\";$#,##0"
 }
   set: drill_fields {
     fields: [age,approved_conversion,sales]
