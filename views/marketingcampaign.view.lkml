@@ -4,6 +4,7 @@ view: marketingcampaign {
   sql_table_name: `boostr-396507.zazmic_marketing.Marketingcampaign` ;;
 
   dimension: ad_campaigns {
+    primary_key: yes
     type: number
     sql: ${TABLE}.Ad_Campaigns ;;
   }
