@@ -22,9 +22,13 @@ view: marketing_campaign {
 
   measure: total_acquisition_cost {
     type: sum
+    value_format: "0.00"
     sql: ${acquisition_cost} ;;  }
+
+
   measure: average_acquisition_cost {
     type: average
+    value_format: "0.00"
     sql: ${acquisition_cost} ;;  }
 
   dimension: campaign_id {
