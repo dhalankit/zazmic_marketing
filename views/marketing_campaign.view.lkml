@@ -1,6 +1,5 @@
 # The name of this view in Looker is "Marketing Campaign"
 view: marketing_campaign {
-  label: "Campaign"
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
   sql_table_name: `boostr-396507.zazmic_marketing.marketing_campaign` ;;
@@ -30,7 +29,6 @@ view: marketing_campaign {
 
   dimension: campaign_id {
     type: number
-    primary_key: yes
     sql: ${TABLE}.Campaign_ID ;;
   }
 
