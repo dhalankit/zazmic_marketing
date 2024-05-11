@@ -22,8 +22,9 @@ view: marketing_campaign {
 
   measure: total_acquisition_cost {
     type: sum
-    value_format: "0.00"
-    sql: ${acquisition_cost} ;;  }
+    sql: ${acquisition_cost} ;;
+    value_format: "$#,##0.00,,\" M\""
+    }
 
 
   measure: average_acquisition_cost {
@@ -122,8 +123,16 @@ view: marketing_campaign {
   }
 measure: Total_sales {
   type: sum
-  value_format: "0.00"
+  value_format: "$#,##0.00,,\" M\""
   sql: ${sales} ;;
+  html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
+
+}
+
+measure: Total_ROI {
+  type: number
+  sql: (${Total_sales}-${total_acquisition_cost})/${Total_sales} ;;
+  value_format: "0.00%"
 }
   dimension_group: start {
     type: time
