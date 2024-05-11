@@ -96,9 +96,19 @@ view: marketing_campaign {
 
   dimension: location {
     type: string
+   # map_layer_name: us_states
     sql: ${TABLE}.Location ;;
   }
-
+ dimension: state {
+   type: string
+  map_layer_name: us_states
+  sql: case when ${location}="Miami" then "Florida"
+            when ${location}="Chicago" then "Illinois"
+            when ${location}="Houston" then "Texas"
+            when ${location}="Los Angeles" then "California"
+            when ${location}="New York" then "New York"
+            end;;
+ }
   dimension: roi {
     type: number
     sql: ${TABLE}.ROI ;;
@@ -108,7 +118,10 @@ view: marketing_campaign {
     type: number
     sql: ${TABLE}.Sales ;;
   }
-
+measure: Total_sales {
+  type: sum
+  sql: ${sales} ;;
+}
   dimension_group: start {
     type: time
     timeframes: [raw, date, week, month, quarter, year]
