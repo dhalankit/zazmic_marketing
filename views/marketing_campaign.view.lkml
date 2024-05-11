@@ -16,22 +16,6 @@ view: marketing_campaign {
     sql: ${TABLE}.Acquisition_Cost ;;
   }
 
-  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
-  # measures for this dimension, but you can also add measures of many different aggregates.
-  # Click on the type parameter to see all the options in the Quick Help panel on the right.
-
-  measure: total_acquisition_cost {
-    type: sum
-    sql: ${acquisition_cost} ;;
-    value_format: "$#,##0.00,,\" M\""
-    }
-
-
-  measure: average_acquisition_cost {
-    type: average
-    value_format: "0.00"
-    sql: ${acquisition_cost} ;;  }
-
   dimension: campaign_id {
     type: number
     sql: ${TABLE}.Campaign_ID ;;
@@ -99,19 +83,19 @@ view: marketing_campaign {
 
   dimension: location {
     type: string
-   # map_layer_name: us_states
+    # map_layer_name: us_states
     sql: ${TABLE}.Location ;;
   }
- dimension: state {
-   type: string
-  map_layer_name: us_states
-  sql: case when ${location}="Miami" then "Florida"
+  dimension: state {
+    type: string
+    map_layer_name: us_states
+    sql: case when ${location}="Miami" then "Florida"
             when ${location}="Chicago" then "Illinois"
             when ${location}="Houston" then "Texas"
             when ${location}="Los Angeles" then "California"
             when ${location}="New York" then "New York"
             end;;
- }
+  }
   dimension: roi {
     type: number
     sql: ${TABLE}.ROI ;;
@@ -121,19 +105,7 @@ view: marketing_campaign {
     type: number
     sql: ${TABLE}.Sales ;;
   }
-measure: Total_sales {
-  type: sum
-  value_format: "$#,##0.00,,\" M\""
-  sql: ${sales} ;;
-  html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
 
-}
-
-measure: Total_ROI {
-  type: number
-  sql: (${Total_sales}-${total_acquisition_cost})/${Total_sales} ;;
-  value_format: "0.00%"
-}
   dimension_group: start {
     type: time
     timeframes: [raw, date, week, month, quarter, year]
@@ -146,6 +118,38 @@ measure: Total_ROI {
     type: string
     sql: ${TABLE}.Target_Audience ;;
   }
+
+  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
+  # measures for this dimension, but you can also add measures of many different aggregates.
+  # Click on the type parameter to see all the options in the Quick Help panel on the right.
+
+  measure: total_acquisition_cost {
+    type: sum
+    sql: ${acquisition_cost} ;;
+    value_format: "$#,##0.00,,\" M\""
+    }
+
+
+  measure: average_acquisition_cost {
+    type: average
+    value_format: "0.00"
+    sql: ${acquisition_cost} ;;  }
+
+
+  measure: Total_sales {
+  type: sum
+  value_format: "$#,##0.00,,\" M\""
+  sql: ${sales} ;;
+  html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
+
+  }
+
+  measure: Total_ROI {
+  type: number
+  sql: (${Total_sales}-${total_acquisition_cost})/${Total_sales} ;;
+  value_format: "0.00%"
+  }
+
   measure: count {
     type: count
   }
