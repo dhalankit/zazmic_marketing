@@ -86,7 +86,7 @@ measure: count {
     drill_fields: [Total_spent,Saless]
   }
 measure: Saless {
-  label: "Sales"
+  label: "Total Sales"
   type: sum
   sql: ${sales} ;;
   value_format:  "[>=1001]$#,##0.00,\" K\";$#,##0"
