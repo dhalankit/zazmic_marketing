@@ -118,6 +118,7 @@ view: marketing_campaign {
   }
 measure: Total_sales {
   type: sum
+  value_format: "0.00"
   sql: ${sales} ;;
 }
   dimension_group: start {
