@@ -16,10 +16,6 @@ view: marketing_campaign {
     sql: ${TABLE}.Acquisition_Cost ;;
   }
 
-  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
-  # measures for this dimension, but you can also add measures of many different aggregates.
-  # Click on the type parameter to see all the options in the Quick Help panel on the right.
-
 
   dimension: campaign_id {
     type: number
@@ -88,19 +84,19 @@ view: marketing_campaign {
 
   dimension: location {
     type: string
-   # map_layer_name: us_states
+    # map_layer_name: us_states
     sql: ${TABLE}.Location ;;
   }
- dimension: state {
-   type: string
-  map_layer_name: us_states
-  sql: case when ${location}="Miami" then "Florida"
+  dimension: state {
+    type: string
+    map_layer_name: us_states
+    sql: case when ${location}="Miami" then "Florida"
             when ${location}="Chicago" then "Illinois"
             when ${location}="Houston" then "Texas"
             when ${location}="Los Angeles" then "California"
             when ${location}="New York" then "New York"
             end;;
- }
+  }
   dimension: roi {
     type: number
     sql: ${TABLE}.ROI ;;
@@ -139,6 +135,7 @@ view: marketing_campaign {
     }
 
   #-------------------------------------------MEASURES________________________________________________________
+
   measure: count {
     type: count
   }
