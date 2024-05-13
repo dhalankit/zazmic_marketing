@@ -15,8 +15,11 @@ view: marketing_campaign {
     type: number
     sql: ${TABLE}.Acquisition_Cost ;;
   }
-
-
+measure: Good_engagement{
+  type: sum
+  sql: case when ${engagement_score}>4 then 1 else 0 end ;;
+  html: {{rendered_value}}| Total count: {{count._rendered_value}} ;;
+}
   dimension: campaign_id {
     type: number
     sql: ${TABLE}.Campaign_ID ;;
