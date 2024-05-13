@@ -20,17 +20,6 @@ view: marketing_campaign {
   # measures for this dimension, but you can also add measures of many different aggregates.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
 
-  measure: total_acquisition_cost {
-    type: sum
-    sql: ${acquisition_cost} ;;
-    value_format: "$#,##0.00,,\" M\""
-    }
-
-
-  measure: average_acquisition_cost {
-    type: average
-    value_format: "0.00"
-    sql: ${acquisition_cost} ;;  }
 
   dimension: campaign_id {
     type: number
@@ -121,19 +110,7 @@ view: marketing_campaign {
     type: number
     sql: ${TABLE}.Sales ;;
   }
-measure: Total_sales {
-  type: sum
-  value_format: "$#,##0.00,,\" M\""
-  sql: ${sales} ;;
-  html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
 
-}
-
-measure: Total_ROI {
-  type: number
-  sql: (${Total_sales}-${total_acquisition_cost})/${Total_sales} ;;
-  value_format: "0.00%"
-}
   dimension_group: start {
     type: time
     timeframes: [raw, date, week, month, quarter, year]
@@ -146,7 +123,68 @@ measure: Total_ROI {
     type: string
     sql: ${TABLE}.Target_Audience ;;
   }
+
+  #-------------------------------------------KPI measures and drill fields-----------------------------------
+  measure: Total_sales_KPI {
+    type: sum
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+    sql: ${sales} ;;
+    #drill_fields: []
+  }
+
+  measure: total_acquisition_cost_KPI {
+    type: sum
+    sql: ${acquisition_cost} ;;
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+    }
+
+  #-------------------------------------------MEASURES________________________________________________________
   measure: count {
     type: count
   }
+  measure: Total_sales {
+    type: sum
+    #value_format: "$#,##0.00,,\" M\""
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+
+    sql: ${sales} ;;
+    html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
+  }
+
+  measure: total_acquisition_cost {
+    type: sum
+    sql: ${acquisition_cost} ;;
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+
+  }
+
+
+  measure: average_acquisition_cost {
+    type: average
+    value_format: "0.00"
+    sql: ${acquisition_cost} ;;  }
+
+  measure: Total_clicks {
+    type: sum
+    sql: ${clicks} ;;
+    html:{{rendered_value}} | Total_Impressions: {{Total_impressions._rendered_value}};;
+  }
+  measure: Total_impressions {
+    type: sum
+    sql: ${impressions} ;;
+  }
+
+  measure: Total_ROI {
+    type: number
+    sql: (${Total_sales}-${total_acquisition_cost})/${Total_sales} ;;
+    value_format: "0.00%"
+  }
+  measure: CTR {
+    type: number
+    sql: ${Total_clicks}/${Total_impressions}  ;;
+    value_format: "0.00%"
+  html: {{rendered_value}} | {{Total_sales_KPI._rendered_value}} ;;
+
+  }
+
 }
