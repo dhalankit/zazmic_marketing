@@ -18,7 +18,7 @@ view: marketing_campaign {
 measure: Good_engagement{
   type: sum
   sql: case when ${engagement_score}>4 then 1 else 0 end ;;
-  html: {{rendered_value}}| Total count: {{count._rendered_value}} ;;
+  html: {{rendered_value}}| Total count: {{Total_sales_KPI._rendered_value}} ;;
 }
   dimension: campaign_id {
     type: number
@@ -123,19 +123,6 @@ measure: Good_engagement{
     sql: ${TABLE}.Target_Audience ;;
   }
 
-  #-------------------------------------------KPI measures and drill fields-----------------------------------
-  measure: Total_sales_KPI {
-    type: sum
-    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
-    sql: ${sales} ;;
-    #drill_fields: []
-  }
-
-  measure: total_acquisition_cost_KPI {
-    type: sum
-    sql: ${acquisition_cost} ;;
-    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
-    }
 
   #-------------------------------------------MEASURES________________________________________________________
 
@@ -146,7 +133,6 @@ measure: Good_engagement{
     type: sum
     #value_format: "$#,##0.00,,\" M\""
     value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
-
     sql: ${sales} ;;
     html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
   }
@@ -186,5 +172,54 @@ measure: Good_engagement{
   html: {{rendered_value}} | {{Total_sales_KPI._rendered_value}} ;;
 
   }
+
+
+  #-------------------------------------------KPI measures and drill fields-----------------------------------
+  measure: Total_sales_KPI {
+    type: sum
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+    sql: ${sales} ;;
+    drill_fields: [campaign_type,duration,total_acquisition_cost,Total_sales_age]}
+  measure: Total_sales_age {
+    label: "Sales"
+    type: sum
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+    sql: ${sales} ;;
+    drill_fields: [target_audience,total_acquisition_cost,Total_sales_channel] }
+  measure: Total_sales_channel {
+    label: "sales(CH)"
+    type: sum
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+    sql: ${sales} ;;
+    drill_fields: [channel_used,total_acquisition_cost,Total_sales_segment] }
+  measure: Total_sales_segment {
+    label: "sales(Seg)"
+    type: sum
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+    sql: ${sales} ;;
+    drill_fields: [customer_segment,total_acquisition_cost,Total_sales] }
+
+  measure: total_acquisition_cost_KPI {
+    type: sum
+    sql: ${acquisition_cost} ;;
+    value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
+  }
+
+  measure: AVG_CR{
+    type: average
+    sql: ${conversion_rate} ;;
+    value_format: "0.00%"
+  }
+  measure: CTR_KPI {
+    type: number
+    sql: ${Total_clicks}/${Total_impressions}  ;;
+    value_format: "0.00%"
+    drill_fields: [clicks,Total_impressions]
+  }
+#### REST IN drill_fields.view file which is refinement#####
+
+
+
+
 
 }
