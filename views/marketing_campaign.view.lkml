@@ -3,7 +3,6 @@ view: marketing_campaign {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
   sql_table_name: `boostr-396507.zazmic_marketing.marketing_campaign` ;;
-
   # No primary key is defined for this view. In order to join this view in an Explore,
   # define primary_key: yes on a dimension that has no repeated values.
 
@@ -18,7 +17,12 @@ view: marketing_campaign {
 measure: Good_engagement{
   type: sum
   sql: case when ${engagement_score}>4 then 1 else 0 end ;;
-  html: {{rendered_value}}| Total count: {{Total_sales_KPI._rendered_value}} ;;
+  html: {{rendered_value}}| Total count: {{count._rendered_value}} ;;
+}
+measure: engagement_percent {
+  type: number
+  sql: ${Good_engagement}/${count};;
+  value_format: "0.00%"
 }
   dimension: campaign_id {
     type: number
@@ -110,6 +114,8 @@ measure: Good_engagement{
     sql: ${TABLE}.Sales ;;
   }
 
+
+
   dimension_group: start {
     type: time
     timeframes: [raw, date, week, month, quarter, year]
@@ -135,7 +141,9 @@ measure: Good_engagement{
     value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
     sql: ${sales} ;;
     html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
-  }
+    drill_fields: [campaign_type,start_month,Total_sales_channel] }
+
+
 
   measure: total_acquisition_cost {
     type: sum
@@ -179,25 +187,29 @@ measure: Good_engagement{
     type: sum
     value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
     sql: ${sales} ;;
-    drill_fields: [campaign_type,duration,total_acquisition_cost,Total_sales_age]}
+    html: {{rendered_value}} | Total_spent: {{total_acquisition_cost._rendered_value}}| ROI: {{Total_ROI._rendered_value}};;
+    drill_fields: [start_month,location,Total_sales_channel]
+    }
   measure: Total_sales_age {
     label: "Sales"
     type: sum
     value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
     sql: ${sales} ;;
-    drill_fields: [target_audience,total_acquisition_cost,Total_sales_channel] }
+    drill_fields: [target_audience,start_month,Total_sales_age] }
+
   measure: Total_sales_channel {
     label: "sales(CH)"
     type: sum
     value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
     sql: ${sales} ;;
-    drill_fields: [channel_used,total_acquisition_cost,Total_sales_segment] }
+    drill_fields: [campaign_type,start_month,Total_sales_channel] }
+
   measure: Total_sales_segment {
     label: "sales(Seg)"
     type: sum
     value_format: "$[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";"
     sql: ${sales} ;;
-    drill_fields: [customer_segment,total_acquisition_cost,Total_sales] }
+    drill_fields: [customer_segment,start_month,Total_sales_segment] }
 
   measure: total_acquisition_cost_KPI {
     type: sum
